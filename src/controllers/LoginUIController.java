@@ -30,7 +30,7 @@ public class LoginUIController implements Initializable {
     @FXML
     private PasswordField signupPasswordField;
     @FXML
-    private ComboBox signupUserTypeComboBox;
+    private ComboBox <String> signupUserTypeComboBox;
 
     private ObservableList < String > userTypes;
     @FXML
@@ -72,7 +72,7 @@ public class LoginUIController implements Initializable {
         * */
         String username = signupUsernameField.getText();
         String password = signupPasswordField.getText();
-        String userType = (String) signupUserTypeComboBox.getValue();
+        String userType = signupUserTypeComboBox.getValue();
         String name = signupNameField.getText();
         String email = signupEmailField.getText();
 

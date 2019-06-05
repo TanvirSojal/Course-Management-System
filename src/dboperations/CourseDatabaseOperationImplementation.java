@@ -13,7 +13,7 @@ import java.sql.Statement;
 
 public class CourseDatabaseOperationImplementation implements CourseDatabaseOperation {
     @Override
-    public ObservableList getAllCourses() throws SQLException {
+    public ObservableList <Course> getAllCourses() throws SQLException {
         Connection connection = DBConnection.getConnection();
         String query = String.format("SELECT * FROM COURSE");
         Statement statement = connection.createStatement();

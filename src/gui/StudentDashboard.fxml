@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -21,22 +22,22 @@
       <Circle fill="#ffdb6f" layoutX="40.0" layoutY="43.0" radius="6.0" stroke="BLACK" strokeWidth="0.0" />
       <HBox layoutX="539.0" layoutY="37.0" prefHeight="58.0" prefWidth="631.0" spacing="10.0">
          <children>
-            <Button mnemonicParsing="false" onAction="#navigateToStudentInformation" prefHeight="30.0" prefWidth="163.0" stylesheets="@../styles/navigation_button.css" text="Student Information" textFill="WHITE">
+            <Button mnemonicParsing="false" onAction="#navigateToStudentInformation" prefHeight="30.0" prefWidth="160.0" stylesheets="@../styles/navigation_button.css" text="Student Information" textFill="WHITE">
                <font>
                   <Font size="14.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" onAction="#navigateToRegistration" prefHeight="30.0" prefWidth="113.0" stylesheets="@../styles/navigation_button.css" text="Registration" textFill="WHITE">
+            <Button mnemonicParsing="false" onAction="#navigateToRegistration" prefHeight="30.0" prefWidth="110.0" stylesheets="@../styles/navigation_button.css" text="Registration" textFill="WHITE">
                <font>
                   <Font size="14.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" stylesheets="@../styles/navigation_button.css" text="Apply for Research" textFill="WHITE">
+            <Button mnemonicParsing="false" prefWidth="140.0" stylesheets="@../styles/navigation_button.css" text="Apply for Research" textFill="WHITE">
                <font>
                   <Font size="14.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" stylesheets="@../styles/navigation_button.css" text="Notifications" textFill="WHITE">
+            <Button mnemonicParsing="false" onAction="#navigateToStudentTeamPane" prefWidth="100.0" stylesheets="@../styles/navigation_button.css" text="Team" textFill="WHITE">
                <font>
                   <Font size="14.0" />
                </font>
@@ -193,21 +194,33 @@
                      <GridPane.margin>
                         <Insets left="10.0" right="10.0" />
                      </GridPane.margin>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
                   </TextField>
                   <TextField fx:id="studentInformationBloodGroupField" prefHeight="26.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                      <GridPane.margin>
                         <Insets left="10.0" right="10.0" />
                      </GridPane.margin>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
                   </TextField>
                   <TextField fx:id="studentInformationContactNumberField" prefHeight="26.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
                      <GridPane.margin>
                         <Insets left="10.0" right="10.0" />
                      </GridPane.margin>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
                   </TextField>
                   <TextField fx:id="studentInformationAddressField" prefHeight="26.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
                      <GridPane.margin>
                         <Insets left="10.0" right="10.0" />
                      </GridPane.margin>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
                   </TextField>
                   <Button alignment="CENTER_RIGHT" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#handleStudentInformationUpdate" stylesheets="@../styles/navigation_button.css" text="Update" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="7">
                      <GridPane.margin>
@@ -242,9 +255,9 @@
             </VBox>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="studentRegistrationPane" layoutY="135.0" prefHeight="715.0" prefWidth="1200.0">
+      <AnchorPane fx:id="studentRegistrationPane" layoutY="135.0" prefHeight="715.0" prefWidth="1200.0" visible="false">
          <children>
-            <Label layoutX="65.0" layoutY="63.0" text="Register for a course">
+            <Label layoutX="65.0" layoutY="63.0" text="Offered Courses">
                <font>
                   <Font size="16.0" />
                </font>
@@ -257,15 +270,15 @@
             </Label>
             <Button layoutX="385.0" layoutY="333.0" mnemonicParsing="false" onAction="#handleCourseRegistration" prefHeight="30.0" prefWidth="170.0" stylesheets="@../styles/navigation_button.css" text="Register" textFill="WHITE" />
             <Label fx:id="registrationStatusLabel" layoutX="65.0" layoutY="340.0" text="Registration Status For Selected Course" />
-            <Button layoutX="958.0" layoutY="333.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="170.0" stylesheets="@../styles/navigation_button.css" text="Remove" textFill="WHITE" />
-            <VBox layoutX="342.0" layoutY="447.0" prefHeight="169.0" prefWidth="517.0" spacing="4.0">
+            <Button layoutX="958.0" layoutY="333.0" mnemonicParsing="false" onAction="#handleCourseRemoval" prefHeight="30.0" prefWidth="170.0" stylesheets="@../styles/navigation_button.css" text="Remove" textFill="WHITE" />
+            <VBox layoutX="293.0" layoutY="445.0" prefHeight="169.0" prefWidth="690.0" spacing="4.0">
                <children>
                   <Label text="Notes:">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <Label alignment="TOP_LEFT" prefHeight="25.0" prefWidth="512.0" text="1. Select a row and hit &quot;Register&quot; button to register for that course (one at a time).">
+                  <Label alignment="TOP_LEFT" prefHeight="25.0" prefWidth="696.0" text="1. Select a row from &quot;Offered Courses&quot; table and hit &quot;Register&quot; button to register for that course (one at a time).">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -284,6 +297,158 @@
             </VBox>
             <TableView fx:id="registeredCoursesTableView" layoutX="638.0" layoutY="120.0" prefHeight="200.0" prefWidth="490.0" />
             <Label fx:id="removeCourseStatusLabel" layoutX="638.0" layoutY="340.0" text="Status for removed course" />
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="studentTeamPane" layoutY="135.0" prefHeight="715.0" prefWidth="1200.0">
+         <children>
+            <Label layoutX="65.0" layoutY="63.0" text="Create a Team">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label layoutX="638.0" layoutY="63.0" text="Your Team">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Button layoutX="958.0" layoutY="273.0" mnemonicParsing="false" onAction="#handleTeamDelete" prefHeight="30.0" prefWidth="170.0" stylesheets="@../styles/navigation_button.css" text="Delete Team" textFill="WHITE" />
+            <VBox layoutX="65.0" layoutY="498.0" prefHeight="183.0" prefWidth="490.0" spacing="4.0">
+               <children>
+                  <Label text="Notes:">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="TOP_LEFT" prefHeight="47.0" prefWidth="490.0" text="1. Team Name, Member 2 and Member 3 are not mandatory. You may have no name and may work alone." wrapText="true">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="TOP_LEFT" prefHeight="50.0" prefWidth="490.0" text="2. You can edit your team as many times you want before your application is endorsed by Supervisor." wrapText="true">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="TOP_LEFT" prefHeight="25.0" prefWidth="512.0" text="3. The members you add has to confirm your &quot;Join Request&quot;." wrapText="true">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="TOP_LEFT" prefHeight="25.0" prefWidth="512.0" text="4. You have to confirm &quot;Join Request&quot; sent by others to join their team." wrapText="true">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+            <TableView fx:id="teamTableView" layoutX="638.0" layoutY="150.0" prefHeight="108.0" prefWidth="490.0" />
+            <Label fx:id="teamRemovalStatusLabel" alignment="TOP_LEFT" layoutX="638.0" layoutY="280.0" prefHeight="37.0" prefWidth="279.0" text="Status of member confirmation" />
+            <GridPane layoutX="65.0" layoutY="120.0" prefHeight="289.0" prefWidth="490.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="240.0" minWidth="10.0" prefWidth="203.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="287.0" minWidth="10.0" prefWidth="287.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label text="Team Name">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label text="Member 1 Student ID" GridPane.rowIndex="2">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label text="Member 2 Student ID" GridPane.rowIndex="3">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label text="Member 3 Student ID" GridPane.rowIndex="4">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="teamNameField" prefHeight="26.0" promptText="max 20 characters" GridPane.columnIndex="1">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </TextField>
+                  <Label fx:id="team1stMemberId" prefHeight="10.0" prefWidth="84.0" text="Member1ID" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Label>
+                  <TextField fx:id="team2ndMemberIdField" prefHeight="26.0" promptText="Member 2 ID" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </TextField>
+                  <TextField fx:id="team3rdMemberIdField" prefHeight="26.0" promptText="Member 3 ID" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </TextField>
+                  <Button mnemonicParsing="false" onAction="#handleCreateTeam" prefHeight="30.0" prefWidth="170.0" stylesheets="@../styles/navigation_button.css" text="Create" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                  <Label text="Supervisor choice" GridPane.rowIndex="1">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <ComboBox fx:id="supervisorComboBox" prefHeight="26.0" prefWidth="286.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label fx:id="createTeamStatusLabel" text="createTeamStatusLabel" GridPane.columnSpan="2" GridPane.rowIndex="6" />
+                  <Label text="Team Name">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+            </GridPane>
+            <Label layoutX="638.0" layoutY="350.0" text="Membership Proposals (From other Teams)">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Button layoutX="958.0" layoutY="620.0" mnemonicParsing="false" onAction="#handleCourseRemoval" prefHeight="30.0" prefWidth="170.0" stylesheets="@../styles/navigation_button.css" text="Reject" textFill="WHITE" />
+            <TableView fx:id="teamProposalTableView" layoutX="638.0" layoutY="407.0" prefHeight="200.0" prefWidth="490.0" />
+            <Label fx:id="removeCourseStatusLabel11" layoutX="638.0" layoutY="662.0" text="Status of member proposals" />
+            <HBox layoutX="638.0" layoutY="113.0" prefHeight="27.0" prefWidth="270.0" spacing="10.0">
+               <children>
+                  <Label text="Team Name: ">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="teamNameLabel" prefHeight="20.0" prefWidth="170.0" text="Team Name: ">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox layoutX="917.0" layoutY="113.0" prefHeight="27.0" prefWidth="208.0" spacing="10.0">
+               <children>
+                  <Label prefHeight="20.0" prefWidth="130.0" text="Supervisor:">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="supervisorLabel" prefHeight="20.0" prefWidth="170.0" text="Faculty Name">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <Button layoutX="773.0" layoutY="620.0" mnemonicParsing="false" onAction="#handleCourseRemoval" prefHeight="30.0" prefWidth="170.0" stylesheets="@../styles/navigation_button.css" text="Confirm" textFill="WHITE" />
          </children>
       </AnchorPane>
    </children>
