@@ -17,10 +17,11 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import users.LoginInfo;
 import users.User;
-import users.UserDatabaseOperation;
+import users.dbinterfaces.UserDatabaseOperation;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class LoginUIController implements Initializable {
@@ -66,7 +67,7 @@ public class LoginUIController implements Initializable {
     }
 
     @FXML
-    private void handleSignUpButton(javafx.event.ActionEvent actionEvent) {
+    private void handleSignUpButton(javafx.event.ActionEvent actionEvent) throws SQLException {
         /*
         * Getting all the values from textfields and combobox if "Signup" page
         * */
@@ -77,10 +78,16 @@ public class LoginUIController implements Initializable {
         String email = signupEmailField.getText();
 
         // If the required fields are not empty, then we insert into database
-        if (!username.isEmpty()  && !password.isEmpty() && userType != null){
+        if (!name.isEmpty() && !username.isEmpty()  && !password.isEmpty() && userType != null){
             signupStatusLabel.setText(null); // remove any previous error message
             User user = new User(name, email, username, password, userType);
             UserDatabaseOperation userops = new UserDatabaseOperationImplementation();
+
+            if (userops.exists(user)){
+                signupStatusLabel.setText("Username already exists!");
+                return;
+            }
+
             if (userops.insertUser(user)){
                 signupStatusLabel.setText("Signed Up successfully!");
             }
@@ -89,13 +96,13 @@ public class LoginUIController implements Initializable {
             }
         }
         else{
-            System.out.println("User insertion error!");
+            //System.out.println("User insertion error!");
             signupStatusLabel.setText("Invalid Credentials/Required Field(s) are empty.");
         }
     }
 
     @FXML
-    private void handleLoginButton(ActionEvent actionEvent) {
+    private void handleLoginButton(ActionEvent actionEvent) throws SQLException {
         String username = loginUsernameField.getText();
         String password = loginPasswordField.getText();
 
@@ -110,10 +117,20 @@ public class LoginUIController implements Initializable {
             if (userops.verifyUserLogin(logins)){
                 System.out.println("Verified");
                 passableUsername = logins.getUsername();
-
+                String userType = userops.getUserType(logins);
                 try {
-                    Parent StudentDashboardParent = FXMLLoader.load(getClass().getResource("/gui/StudentDashboard.fxml"));
-                    Scene StudentDashboardScene = new Scene(StudentDashboardParent);
+                    Parent DashboardParent;
+
+                    if (userType.equals("Student")) // user is "Student"
+                        DashboardParent = FXMLLoader.load(getClass().getResource("/gui/StudentDashboard.fxml"));
+
+                    else if (userType.equals("Teacher")) // user is "Teacher"
+                        DashboardParent = FXMLLoader.load(getClass().getResource("/gui/TeacherDashboard.fxml"));
+
+                    else // user is "Chairman"
+                        DashboardParent = FXMLLoader.load(getClass().getResource("/gui/ChairmanDashboard.fxml"));
+
+                    Scene StudentDashboardScene = new Scene(DashboardParent);
 
                     Stage window = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
                     window.setScene(StudentDashboardScene);

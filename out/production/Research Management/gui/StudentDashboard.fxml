@@ -4,8 +4,13 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -32,12 +37,12 @@
                   <Font size="14.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" prefWidth="140.0" stylesheets="@../styles/navigation_button.css" text="Apply for Research" textFill="WHITE">
+            <Button mnemonicParsing="false" onAction="#navigateToStudentTeamPane" prefWidth="100.0" stylesheets="@../styles/navigation_button.css" text="Team" textFill="WHITE">
                <font>
                   <Font size="14.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" onAction="#navigateToStudentTeamPane" prefWidth="100.0" stylesheets="@../styles/navigation_button.css" text="Team" textFill="WHITE">
+            <Button mnemonicParsing="false" onAction="#navigateToResearchApplicationPane" prefWidth="140.0" stylesheets="@../styles/navigation_button.css" text="Apply for Research" textFill="WHITE">
                <font>
                   <Font size="14.0" />
                </font>
@@ -299,7 +304,7 @@
             <Label fx:id="removeCourseStatusLabel" layoutX="638.0" layoutY="340.0" text="Status for removed course" />
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="studentTeamPane" layoutY="135.0" prefHeight="715.0" prefWidth="1200.0">
+      <AnchorPane fx:id="studentTeamPane" layoutY="135.0" prefHeight="715.0" prefWidth="1200.0" visible="false">
          <children>
             <Label layoutX="65.0" layoutY="63.0" text="Create a Team">
                <font>
@@ -311,20 +316,19 @@
                   <Font size="16.0" />
                </font>
             </Label>
-            <Button layoutX="958.0" layoutY="273.0" mnemonicParsing="false" onAction="#handleTeamDelete" prefHeight="30.0" prefWidth="170.0" stylesheets="@../styles/navigation_button.css" text="Delete Team" textFill="WHITE" />
-            <VBox layoutX="65.0" layoutY="498.0" prefHeight="183.0" prefWidth="490.0" spacing="4.0">
+            <VBox layoutX="65.0" layoutY="536.0" prefHeight="143.0" prefWidth="490.0" spacing="4.0">
                <children>
                   <Label text="Notes:">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <Label alignment="TOP_LEFT" prefHeight="47.0" prefWidth="490.0" text="1. Team Name, Member 2 and Member 3 are not mandatory. You may have no name and may work alone." wrapText="true">
+                  <Label alignment="TOP_LEFT" prefHeight="23.0" prefWidth="490.0" text="1.Member per team limit is up to 3. Team limit is also upto 3." wrapText="true">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <Label alignment="TOP_LEFT" prefHeight="50.0" prefWidth="490.0" text="2. You can edit your team as many times you want before your application is endorsed by Supervisor." wrapText="true">
+                  <Label alignment="TOP_LEFT" prefHeight="23.0" prefWidth="490.0" text="2. Giving a name of your team is optional." wrapText="true">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -341,8 +345,6 @@
                   </Label>
                </children>
             </VBox>
-            <TableView fx:id="teamTableView" layoutX="638.0" layoutY="150.0" prefHeight="108.0" prefWidth="490.0" />
-            <Label fx:id="teamRemovalStatusLabel" alignment="TOP_LEFT" layoutX="638.0" layoutY="280.0" prefHeight="37.0" prefWidth="279.0" text="Status of member confirmation" />
             <GridPane layoutX="65.0" layoutY="120.0" prefHeight="289.0" prefWidth="490.0">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="240.0" minWidth="10.0" prefWidth="203.0" />
@@ -412,43 +414,375 @@
                   </Label>
                </children>
             </GridPane>
-            <Label layoutX="638.0" layoutY="350.0" text="Membership Proposals (From other Teams)">
+            <Label layoutX="638.0" layoutY="362.0" text="Membership Proposals (From other Teams)">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <Button layoutX="958.0" layoutY="620.0" mnemonicParsing="false" onAction="#handleCourseRemoval" prefHeight="30.0" prefWidth="170.0" stylesheets="@../styles/navigation_button.css" text="Reject" textFill="WHITE" />
+            <Button layoutX="958.0" layoutY="620.0" mnemonicParsing="false" onAction="#handleRejectTeamProposal" prefHeight="30.0" prefWidth="170.0" stylesheets="@../styles/navigation_button.css" text="Reject" textFill="WHITE" />
             <TableView fx:id="teamProposalTableView" layoutX="638.0" layoutY="407.0" prefHeight="200.0" prefWidth="490.0" />
-            <Label fx:id="removeCourseStatusLabel11" layoutX="638.0" layoutY="662.0" text="Status of member proposals" />
-            <HBox layoutX="638.0" layoutY="113.0" prefHeight="27.0" prefWidth="270.0" spacing="10.0">
+            <Label fx:id="proposalStatusLabel" layoutX="638.0" layoutY="662.0" text="Status of member proposals" />
+            <Button layoutX="773.0" layoutY="620.0" mnemonicParsing="false" onAction="#handleConfirmTeamProposal" prefHeight="30.0" prefWidth="170.0" stylesheets="@../styles/navigation_button.css" text="Confirm" textFill="WHITE" />
+            <TabPane fx:id="teamTabPane" layoutX="638.0" layoutY="97.0" prefHeight="247.0" prefWidth="512.0" tabClosingPolicy="UNAVAILABLE">
+              <tabs>
+                <Tab text="Team 1">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <AnchorPane layoutX="-293.0" layoutY="-14.0" prefHeight="171.0" prefWidth="501.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-8.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <TableView fx:id="team1TableView" layoutY="54.0" prefHeight="108.0" prefWidth="490.0" />
+                                    <HBox layoutY="14.0" prefHeight="27.0" prefWidth="116.0" spacing="4.0">
+                                       <children>
+                                          <Label prefHeight="20.0" prefWidth="77.0" text="Team ID: ">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <Label fx:id="team1IdLabel" prefHeight="20.0" prefWidth="50.0" text="132">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <HBox layoutX="353.0" layoutY="14.0" prefHeight="27.0" prefWidth="150.0" spacing="10.0">
+                                       <children>
+                                          <Label prefHeight="20.0" prefWidth="192.0" text="Supervisor:">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <Label fx:id="team1SupervisorLabel" prefHeight="20.0" prefWidth="170.0" text="ABCDE">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <HBox layoutX="125.0" layoutY="14.0" prefHeight="27.0" prefWidth="221.0" spacing="4.0">
+                                       <children>
+                                          <Label text="Name: ">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <Label fx:id="team1NameLabel" prefHeight="20.0" prefWidth="170.0" text="ThisIsALongNameJustTo">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+                <Tab text="Team 2">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="192.0" prefWidth="512.0">
+                           <children>
+                              <AnchorPane prefHeight="171.0" prefWidth="501.0">
+                                 <children>
+                                    <TableView fx:id="team2TableView" layoutY="54.0" prefHeight="108.0" prefWidth="490.0" />
+                                    <HBox layoutY="14.0" prefHeight="27.0" prefWidth="116.0" spacing="4.0">
+                                       <children>
+                                          <Label prefHeight="20.0" prefWidth="77.0" text="Team ID: ">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <Label fx:id="team2IdLabel" prefHeight="20.0" prefWidth="50.0" text="132">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <HBox layoutX="353.0" layoutY="14.0" prefHeight="27.0" prefWidth="150.0" spacing="10.0">
+                                       <children>
+                                          <Label prefHeight="20.0" prefWidth="192.0" text="Supervisor:">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <Label fx:id="team2SupervisorLabel" prefHeight="20.0" prefWidth="170.0" text="ABCDE">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <HBox layoutX="125.0" layoutY="14.0" prefHeight="27.0" prefWidth="221.0" spacing="4.0">
+                                       <children>
+                                          <Label text="Name: ">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <Label fx:id="team2NameLabel" prefHeight="20.0" prefWidth="170.0" text="ThisIsALongNameJustTo">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+                  <Tab text="Team 3">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <AnchorPane prefHeight="171.0" prefWidth="501.0">
+                                 <children>
+                                    <TableView fx:id="team3TableView" layoutY="54.0" prefHeight="108.0" prefWidth="490.0" />
+                                    <HBox layoutY="14.0" prefHeight="27.0" prefWidth="116.0" spacing="4.0">
+                                       <children>
+                                          <Label prefHeight="20.0" prefWidth="77.0" text="Team ID: ">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <Label fx:id="team3IdLabel" prefHeight="20.0" prefWidth="50.0" text="132">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <HBox layoutX="353.0" layoutY="14.0" prefHeight="27.0" prefWidth="150.0" spacing="10.0">
+                                       <children>
+                                          <Label prefHeight="20.0" prefWidth="192.0" text="Supervisor:">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <Label fx:id="team3SupervisorLabel" prefHeight="20.0" prefWidth="170.0" text="ABCDE">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <HBox layoutX="125.0" layoutY="14.0" prefHeight="27.0" prefWidth="221.0" spacing="4.0">
+                                       <children>
+                                          <Label text="Name: ">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <Label fx:id="team3NameLabel" prefHeight="20.0" prefWidth="170.0" text="ThisIsALongNameJustTo">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </Tab>
+              </tabs>
+            </TabPane>
+            <Label fx:id="teamRemovalStatusLabel" alignment="TOP_LEFT" layoutX="638.0" layoutY="301.0" prefHeight="37.0" prefWidth="279.0" text="Status of member confirmation" />
+            <Button layoutX="958.0" layoutY="300.0" mnemonicParsing="false" onAction="#handleTeamDelete" prefHeight="30.0" prefWidth="170.0" stylesheets="@../styles/navigation_button.css" text="Delete Team" textFill="WHITE" />
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="researchApplicationPane" layoutY="135.0" prefHeight="715.0" prefWidth="1200.0">
+         <children>
+            <Label layoutX="65.0" layoutY="63.0" text="Research Application">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label layoutX="639.0" layoutY="455.0" text="Application Details">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <VBox layoutX="639.0" layoutY="616.0" prefHeight="66.0" prefWidth="490.0" spacing="4.0">
                <children>
-                  <Label text="Team Name: ">
+                  <Label text="Notes:">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <Label fx:id="teamNameLabel" prefHeight="20.0" prefWidth="170.0" text="Team Name: ">
+                  <Label alignment="TOP_LEFT" prefHeight="40.0" prefWidth="490.0" text="1. Select a row from &quot;Application History&quot; table and click &quot;Show Stats&quot; to see the application." wrapText="true">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+            <TableView fx:id="researchApplicationTableView" layoutX="68.0" layoutY="502.0" prefHeight="108.0" prefWidth="490.0" />
+            <GridPane layoutX="65.0" layoutY="120.0" prefHeight="305.0" prefWidth="1063.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="240.0" minWidth="10.0" prefWidth="172.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="287.0" minWidth="10.0" prefWidth="199.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="287.0" minWidth="10.0" prefWidth="82.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="287.0" minWidth="10.0" prefWidth="160.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="445.0" minWidth="10.0" prefWidth="167.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="582.0" minWidth="10.0" prefWidth="153.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="582.0" minWidth="10.0" prefWidth="207.0" />
+                  <ColumnConstraints />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="48.0" minHeight="10.0" prefHeight="43.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="105.0" minHeight="10.0" prefHeight="101.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="62.0" minHeight="10.0" prefHeight="48.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="39.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="45.0" minHeight="10.0" prefHeight="42.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <Label text="Research Topic/Title">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label text="Aims/Hypothesis" GridPane.rowIndex="2">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label text="Comment" GridPane.rowIndex="4">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="researchTopicField" prefHeight="26.0" promptText="max 100 characters" GridPane.columnIndex="1" GridPane.columnSpan="6">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </TextField>
+                  <TextField fx:id="researchCommentField" prefHeight="26.0" promptText="Extra comment within 100 characters. May leave it empty." GridPane.columnIndex="1" GridPane.columnSpan="6" GridPane.rowIndex="4">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </TextField>
+                  <Button mnemonicParsing="false" onAction="#handleApplyForResearch" prefHeight="30.0" prefWidth="170.0" stylesheets="@../styles/navigation_button.css" text="Apply" textFill="WHITE" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="5" />
+                  <Label fx:id="researchApplicationFormStatusLabel" text="applicationStatusLabel" GridPane.columnIndex="4" GridPane.columnSpan="3" GridPane.rowIndex="5" />
+                  <TextArea fx:id="researchHypothesisArea" prefHeight="200.0" prefWidth="200.0" promptText="Say something about your research idea within 600 characters. Not mandatory." GridPane.columnIndex="1" GridPane.columnSpan="6" GridPane.rowIndex="2" GridPane.rowSpan="2">
+                     <GridPane.margin>
+                        <Insets bottom="4.0" top="4.0" />
+                     </GridPane.margin>
+                  </TextArea>
+                  <Label text="Team" GridPane.rowIndex="1">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <ComboBox fx:id="researchTeamComboBox" prefHeight="26.0" prefWidth="208.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+                  <Label text="Semester(s) Needed" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <RadioButton fx:id="semesterRadioButton1" mnemonicParsing="false" selected="true" text="1 Semester" GridPane.columnIndex="4" GridPane.rowIndex="1">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <toggleGroup>
+                        <ToggleGroup fx:id="semesterSelectRadioButtons" />
+                     </toggleGroup>
+                  </RadioButton>
+                  <RadioButton fx:id="semesterRadioButton2" mnemonicParsing="false" text="2 Semesters" toggleGroup="$semesterSelectRadioButtons" GridPane.columnIndex="5" GridPane.rowIndex="1">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </RadioButton>
+                  <Button mnemonicParsing="false" onAction="#handleResetResearchPageFields" prefHeight="30.0" prefWidth="170.0" stylesheets="@../styles/navigation_button.css" text="Reset" textFill="WHITE" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="5" />
+               </children>
+            </GridPane>
+            <HBox layoutX="638.0" layoutY="502.0" prefHeight="27.0" prefWidth="116.0" spacing="4.0">
+               <children>
+                  <Label prefHeight="20.0" prefWidth="77.0" text="Team ID: ">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="researchTeamIdLabel" prefHeight="20.0" prefWidth="50.0" text="0">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
                </children>
             </HBox>
-            <HBox layoutX="917.0" layoutY="113.0" prefHeight="27.0" prefWidth="208.0" spacing="10.0">
+            <HBox layoutX="991.0" layoutY="502.0" prefHeight="27.0" prefWidth="150.0" spacing="10.0">
                <children>
-                  <Label prefHeight="20.0" prefWidth="130.0" text="Supervisor:">
+                  <Label prefHeight="20.0" prefWidth="192.0" text="Supervisor:">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <Label fx:id="supervisorLabel" prefHeight="20.0" prefWidth="170.0" text="Faculty Name">
+                  <Label fx:id="researchTeamSupervisorLabel" prefHeight="20.0" prefWidth="170.0" text="ABCDE">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
                </children>
             </HBox>
-            <Button layoutX="773.0" layoutY="620.0" mnemonicParsing="false" onAction="#handleCourseRemoval" prefHeight="30.0" prefWidth="170.0" stylesheets="@../styles/navigation_button.css" text="Confirm" textFill="WHITE" />
+            <HBox layoutX="763.0" layoutY="502.0" prefHeight="27.0" prefWidth="221.0" spacing="4.0">
+               <children>
+                  <Label text="Name: ">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="researchTeamNameLabel" prefHeight="20.0" prefWidth="170.0" text="ThisIsALongNameJustTo">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox layoutX="638.0" layoutY="537.0" prefHeight="27.0" prefWidth="305.0" spacing="10.0">
+               <children>
+                  <Label prefHeight="20.0" prefWidth="129.0" text="Supervisor Status:">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="researchSupervisorStatusLabel" prefHeight="20.0" prefWidth="170.0" textFill="RED">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <Label layoutX="68.0" layoutY="455.0" text="Application History">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Button layoutX="68.0" layoutY="619.0" mnemonicParsing="false" onAction="#displayResearchApplicationInformation" prefHeight="30.0" prefWidth="170.0" stylesheets="@../styles/navigation_button.css" text="Show Stats" textFill="WHITE" />
+            <Label fx:id="applicationHistoryStatusLabel" layoutX="68.0" layoutY="663.0" text="applicationHistoryStatusLabel" />
+            <Button layoutX="260.0" layoutY="619.0" mnemonicParsing="false" onAction="#clearApplicationStats" prefHeight="30.0" prefWidth="170.0" stylesheets="@../styles/navigation_button.css" text="Clear" textFill="WHITE" />
+            <HBox layoutX="639.0" layoutY="574.0" prefHeight="27.0" prefWidth="305.0" spacing="10.0">
+               <children>
+                  <Label prefHeight="20.0" prefWidth="129.0" text="Application Status:">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="researchApplicationStatusLabel" prefHeight="20.0" prefWidth="170.0" textFill="RED">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
          </children>
       </AnchorPane>
    </children>

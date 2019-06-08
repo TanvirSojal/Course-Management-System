@@ -14,7 +14,20 @@ CREATE TABLE TEACHER(
 	Teacher_ID VARCHAR(20) PRIMARY KEY,
     Teacher_Name VARCHAR(30) NOT NULL,
     Teacher_Email VARCHAR(30),
+    Teacher_Blood_Group VARCHAR(10),
+    Teacher_Contact_Number VARCHAR(20),
+    Teacher_Address VARCHAR(60),
     FOREIGN KEY TEACHER(Teacher_ID) REFERENCES LOGINS(USERNAME)
+);
+
+CREATE TABLE CHAIRMAN(
+	Chairman_ID VARCHAR(20) PRIMARY KEY,
+    Chairman_Name VARCHAR(30) NOT NULL,
+    Chairman_Email VARCHAR(30),
+    Chairman_Blood_Group VARCHAR(10),
+    Chairman_Contact_Number VARCHAR(20),
+    Chairman_Address VARCHAR(60),
+    FOREIGN KEY CHAIRMAN(Chairman_ID) REFERENCES LOGINS(USERNAME)
 );
 
 INSERT INTO LOGINS VALUES("SM", "123", "Teacher");
@@ -23,11 +36,11 @@ INSERT INTO LOGINS VALUES("AR", "123", "Teacher");
 INSERT INTO LOGINS VALUES("RAJ", "123", "Teacher");
 INSERT INTO LOGINS VALUES("KIA", "123", "Teacher");
 
-INSERT INTO TEACHER VALUES("SM", "Shahriar Manzoor", "smanzoor@gmail.com");
-INSERT INTO TEACHER VALUES("KMH", "Monirul Hasan", "kmhasan@gmail.com");
-INSERT INTO TEACHER VALUES("AR", "Ashiqur Rahman", "ashiq.seu@gmail.com");
-INSERT INTO TEACHER VALUES("RAJ", "Roksana Akhter Jolly", "roksana.seu@gmail.com");
-INSERT INTO TEACHER VALUES("KIA", "Kimia Aksir", "kimia.aksir@gmail.com");
+INSERT INTO TEACHER VALUES("SM", "Shahriar Manzoor", "smanzoor@gmail.com", '', '', '');
+INSERT INTO TEACHER VALUES("KMH", "Monirul Hasan", "kmhasan@gmail.com", '', '', '');
+INSERT INTO TEACHER VALUES("AR", "Ashiqur Rahman", "ashiq.seu@gmail.com", '', '', '');
+INSERT INTO TEACHER VALUES("RAJ", "Roksana Akhter Jolly", "roksana.seu@gmail.com", '', '', '');
+INSERT INTO TEACHER VALUES("KIA", "Kimia Aksir", "kimia.aksir@gmail.com", '', '', '');
 
 
 -- Student Table holds information of a Student
@@ -84,9 +97,12 @@ CREATE TABLE TEAM(
 CREATE TABLE APPLICATION(
 	Application_ID INT(10) PRIMARY KEY AUTO_INCREMENT,
     Application_Date DATE NOT NULL,
-    Application_Body VARCHAR(100) NOT NULL,
-    Application_Student_0_ID VARCHAR(20) NOT NULL,
-    Application_Student_1_ID  VARCHAR(20),
-    Application_Student_2_ID VARCHAR(20),
-    FOREIGN KEY APPLICATION(Application_Student_0_ID) REFERENCES STUDENT(Student_ID)
+    Application_Title VARCHAR(110) NOT NULL,
+    Application_Semester_Needed INT NOT NULL,
+    Application_Hypothesis VARCHAR(610),
+    Application_Comment VARCHAR(110),
+    Application_Team_ID INT(10) NOT NULL,
+    Application_Status VARCHAR(15),
+    FOREIGN KEY APPLICATION(Application_Team_ID) REFERENCES TEAM(Team_ID)
 );
+

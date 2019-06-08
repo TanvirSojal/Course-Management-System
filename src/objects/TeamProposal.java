@@ -1,7 +1,7 @@
 package objects;
 
 import dboperations.StudentDatabaseOperationImplementation;
-import users.StudentDatabaseOperation;
+import users.dbinterfaces.StudentDatabaseOperation;
 
 import java.sql.SQLException;
 
@@ -46,9 +46,12 @@ public class TeamProposal {
         this.team3rdMemberStatus = that.getTeam3rdMemberStatus();
 
         StudentDatabaseOperation studentOp = new StudentDatabaseOperationImplementation();
-        this.team1stMemberName = studentOp.getStudent(team1stMemberId).getStudentName();
-        this.team2ndMemberName = studentOp.getStudent(team2ndMemberId).getStudentName();
-        this.team3rdMemberName = studentOp.getStudent(team3rdMemberId).getStudentName();
+        if (team1stMemberId != null)
+            this.team1stMemberName = studentOp.getStudent(team1stMemberId).getStudentName();
+        if (team2ndMemberId != null)
+            this.team2ndMemberName = studentOp.getStudent(team2ndMemberId).getStudentName();
+        if (team3rdMemberId != null)
+            this.team3rdMemberName = studentOp.getStudent(team3rdMemberId).getStudentName();
     }
 
     public int getTeamId() {

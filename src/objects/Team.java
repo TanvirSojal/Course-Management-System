@@ -35,17 +35,16 @@ public class Team {
         this.team3rdMemberStatus = that.getTeam3rdMemberStatus();
     }
 
-    private Team test(Team that){
-        int teamId = that.teamId;
-        String teamName = that.teamName;
-        String teamSupervisorId = that.teamSupervisorId;
-        String team1stMemberId = that.team1stMemberId;
-        String team1stMemberStatus = that.team1stMemberStatus;
-        String team2ndMemberId = that.team2ndMemberId;
-        String team2ndMemberStatus = that.team2ndMemberStatus;
-        String team3rdMemberId = that.team3rdMemberId;
-        String team3rdMemberStatus = that.team3rdMemberStatus;
-        return new Team(teamId, teamName, teamSupervisorId, team1stMemberId, team1stMemberStatus, team2ndMemberId, team2ndMemberStatus, team3rdMemberId, team3rdMemberStatus);
+    public Team(TeamProposal that){
+        this.teamId = that.getTeamId();
+        this.teamName = that.getTeamName();
+        this.teamSupervisorId = that.getTeamSupervisorId();
+        this.team1stMemberId = that.getTeam1stMemberId();
+        this.team1stMemberStatus = that.getTeam1stMemberStatus();
+        this.team2ndMemberId = that.getTeam2ndMemberId();
+        this.team2ndMemberStatus = that.getTeam2ndMemberStatus();
+        this.team3rdMemberId = that.getTeam3rdMemberId();
+        this.team3rdMemberStatus = that.getTeam3rdMemberStatus();
     }
 
     public int getTeamId() {
@@ -122,16 +121,13 @@ public class Team {
 
     @Override
     public String toString() {
-        return "Team{" +
-                "teamId=" + teamId +
-                ", teamName='" + teamName + '\'' +
-                ", teamSupervisorId='" + teamSupervisorId + '\'' +
-                ", team1stMemberId='" + team1stMemberId + '\'' +
-                ", team1stMemberStatus='" + team1stMemberStatus + '\'' +
-                ", team2ndMemberId='" + team2ndMemberId + '\'' +
-                ", team2ndMemberStatus='" + team2ndMemberStatus + '\'' +
-                ", team3rdMemberId='" + team3rdMemberId + '\'' +
-                ", team3rdMemberStatus='" + team3rdMemberStatus + '\'' +
-                '}';
+        int memberCount = 0;
+        if (team1stMemberId != null)
+            memberCount++;
+        if (team2ndMemberId != null)
+            memberCount++;
+        if (team3rdMemberId != null)
+            memberCount++;
+        return String.format("(%d) : %s : %d Member(s) : %s", this.teamId, this.teamName, memberCount, this.teamSupervisorId);
     }
 }

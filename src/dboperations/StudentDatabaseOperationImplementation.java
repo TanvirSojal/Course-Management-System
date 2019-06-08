@@ -2,7 +2,7 @@ package dboperations;
 
 import dbconnection.DBConnection;
 import users.Student;
-import users.StudentDatabaseOperation;
+import users.dbinterfaces.StudentDatabaseOperation;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -14,7 +14,7 @@ public class StudentDatabaseOperationImplementation implements StudentDatabaseOp
 
     @Override
     public boolean updateStudentEmail(String studentId, String email) {
-        String queryForEmailUpdate = String.format("UPDATE STUDENT SET Student_Email='%s' WHERE Student_Id='%s'",
+        String queryForEmailUpdate = String.format("UPDATE STUDENT SET Student_Email='%s' WHERE Student_ID='%s'",
                                                     email,
                                                     studentId);
 
@@ -32,7 +32,7 @@ public class StudentDatabaseOperationImplementation implements StudentDatabaseOp
 
     @Override
     public boolean updateStudentBloodGroup(String studentId, String bloodGroup) {
-        String queryForBloodGroupUpdate = String.format("UPDATE STUDENT SET Student_Blood_Group='%s' WHERE Student_Id='%s'",
+        String queryForBloodGroupUpdate = String.format("UPDATE STUDENT SET Student_Blood_Group='%s' WHERE Student_ID='%s'",
                                                     bloodGroup,
                                                     studentId);
         Connection connection = DBConnection.getConnection();
@@ -49,7 +49,7 @@ public class StudentDatabaseOperationImplementation implements StudentDatabaseOp
 
     @Override
     public boolean updateStudentContactNumber(String studentId, String contactNumber) {
-        String queryForContactNumberUpdate = String.format("UPDATE STUDENT SET Student_Contact_Number='%s' WHERE Student_Id='%s'",
+        String queryForContactNumberUpdate = String.format("UPDATE STUDENT SET Student_Contact_Number='%s' WHERE Student_ID='%s'",
                 contactNumber,
                 studentId);
         Connection connection = DBConnection.getConnection();
@@ -66,7 +66,7 @@ public class StudentDatabaseOperationImplementation implements StudentDatabaseOp
 
     @Override
     public boolean updateStudentAddress(String studentId, String address) {
-        String queryForAddressUpdate = String.format("UPDATE STUDENT SET Student_Address='%s' WHERE Student_Id='%s'",
+        String queryForAddressUpdate = String.format("UPDATE STUDENT SET Student_Address='%s' WHERE Student_ID='%s'",
                 address,
                 studentId);
 
@@ -86,7 +86,7 @@ public class StudentDatabaseOperationImplementation implements StudentDatabaseOp
     public Student getStudent(String studentId) throws SQLException {
 
         Connection connection = DBConnection.getConnection();
-        String query = String.format("SELECT * FROM STUDENT WHERE Student_Id='%s'", studentId);
+        String query = String.format("SELECT * FROM STUDENT WHERE Student_ID='%s'", studentId);
         Statement statement = connection.createStatement();
 
         ResultSet resultSet = statement.executeQuery(query);

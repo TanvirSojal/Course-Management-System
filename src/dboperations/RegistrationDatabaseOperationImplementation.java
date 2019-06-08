@@ -5,7 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import objects.Course;
 import objects.Registration;
-import objects.RegistrationDatabaseOperation;
+import objects.dbinterfaces.RegistrationDatabaseOperation;
 import users.Student;
 
 import java.sql.Connection;

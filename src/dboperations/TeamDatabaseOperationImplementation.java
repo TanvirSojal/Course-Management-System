@@ -4,7 +4,7 @@ import dbconnection.DBConnection;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import objects.Team;
-import objects.TeamDatabaseOperation;
+import objects.dbinterfaces.TeamDatabaseOperation;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -30,7 +30,7 @@ public class TeamDatabaseOperationImplementation implements TeamDatabaseOperatio
         }
 
         if (team.getTeam3rdMemberId() == null){
-            insertQuery += String.format(", NULL, NULL");
+            insertQuery += String.format(", NULL, NULL)");
         } else {
             insertQuery += String.format(", '%s', '%s')",
                     team.getTeam3rdMemberId(),
@@ -81,10 +81,26 @@ public class TeamDatabaseOperationImplementation implements TeamDatabaseOperatio
     }
 
     @Override
-    public boolean isTeamLeader(String studentId) throws SQLException {
+    public boolean isTeamLeaderOf(int teamId, String studentId) throws SQLException {
         String query = String.format("SELECT TEAM_ID FROM TEAM, STUDENT WHERE " +
-                "STUDENT.Student_ID = '%s' AND STUDENT.Student_ID = TEAM.Team_Member_1_ID",
-                studentId);
+                                    "STUDENT.Student_ID = '%s' AND TEAM.Team_ID=%d AND STUDENT.Student_ID = TEAM.Team_Member_1_ID",
+                                    studentId,
+                                    teamId);
+        Connection connection = DBConnection.getConnection();
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(query);
+        return (resultSet.next());
+    }
+
+    @Override
+    public boolean isMemberOf(int teamId, String studentId) throws SQLException {
+        String query = String.format("SELECT TEAM_ID FROM TEAM, STUDENT WHERE " +
+                        "STUDENT.Student_ID = '%s' AND TEAM.Team_ID=%d " +
+                        "AND (STUDENT.Student_ID = TEAM.Team_Member_1_ID " +
+                        "OR STUDENT.Student_ID = TEAM.Team_Member_1_ID " +
+                        "OR STUDENT.Student_ID = TEAM.Team_Member_3_ID)",
+                studentId,
+                teamId);
         Connection connection = DBConnection.getConnection();
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery(query);
@@ -108,13 +124,90 @@ public class TeamDatabaseOperationImplementation implements TeamDatabaseOperatio
     }
 
     @Override
+    public boolean hasConfirmedAll(int teamId) throws SQLException {
+        String query = String.format("SELECT Team_Name FROM TEAM WHERE Team_ID = %d " +
+                "AND (TEAM.Team_Member_1_ID IS NULL OR Team_Member_1_Status = 'Confirmed') " +
+                "AND (TEAM.Team_Member_2_ID IS NULL OR Team_Member_2_Status = 'Confirmed') " +
+                "AND (TEAM.Team_Member_3_ID IS NULL OR Team_Member_3_Status = 'Confirmed')",
+                teamId);
+        Connection connection = DBConnection.getConnection();
+        Statement statement = connection.createStatement();
+        ResultSet resultSet  = statement.executeQuery(query);
+        return (resultSet.next());
+    }
+
+    @Override
+    public boolean rejectTeam(String studentId, Team team) {
+        String rejectQuery = "";
+        if (studentId.equals(team.getTeam1stMemberId())){
+            rejectQuery = String.format("UPDATE TEAM SET Team_Member_1_Status = 'Rejected' WHERE Team_ID = %d",
+                                        team.getTeamId());
+        }
+        else if (studentId.equals(team.getTeam2ndMemberId())){
+            rejectQuery = String.format("UPDATE TEAM SET Team_Member_2_Status = 'Rejected' WHERE Team_ID = %d",
+                    team.getTeamId());
+        }
+        else if (studentId.equals(team.getTeam3rdMemberId())){
+            rejectQuery = String.format("UPDATE TEAM SET Team_Member_3_Status = 'Rejected' WHERE Team_ID = %d",
+                    team.getTeamId());
+        }
+        else{
+            return false;
+        }
+
+        Connection connection = DBConnection.getConnection();
+
+        try{
+            Statement statement = connection.createStatement();
+            statement.executeUpdate(rejectQuery);
+            return true;
+        } catch (SQLException sqle){
+            sqle.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean confirmTeam(String studentId, Team team) {
+        String confirmQuery = "";
+        if (studentId.equals(team.getTeam1stMemberId())){
+            confirmQuery = String.format("UPDATE TEAM SET Team_Member_1_Status = 'Confirmed' WHERE Team_ID = %d",
+                    team.getTeamId());
+        }
+        else if (studentId.equals(team.getTeam2ndMemberId())){
+            confirmQuery = String.format("UPDATE TEAM SET Team_Member_2_Status = 'Confirmed' WHERE Team_ID = %d",
+                    team.getTeamId());
+        }
+        else if (studentId.equals(team.getTeam3rdMemberId())){
+            confirmQuery = String.format("UPDATE TEAM SET Team_Member_3_Status = 'Confirmed' WHERE Team_ID = %d",
+                    team.getTeamId());
+        }
+        else{
+            return false;
+        }
+
+        Connection connection = DBConnection.getConnection();
+
+        try{
+            Statement statement = connection.createStatement();
+            statement.executeUpdate(confirmQuery);
+            return true;
+        } catch (SQLException sqle){
+            sqle.printStackTrace();
+        }
+        return false;
+    }
+
+    // Returns all the team proposals where student name is mentioned and the status is "Pending"
+    // If the student rejects the proposal the status will be "Rejected" and those proposals will not be fetched
+    @Override
     public ObservableList<Team> studentMentionedIn(String studentId) throws SQLException {
         String query = String.format("SELECT TEAM.Team_ID, TEAM.Team_Name, TEAM.Team_Supervisor_ID, TEAM.Team_Member_1_ID, TEAM.Team_Member_1_Status, TEAM.Team_Member_2_ID, TEAM.Team_Member_2_Status, TEAM.Team_Member_3_ID, TEAM.Team_Member_3_Status" +
                         " FROM TEAM, STUDENT " +
                         "WHERE STUDENT.Student_ID = '%s' " +
-                        "AND (TEAM.Team_Member_1_ID = STUDENT.Student_ID " +
-                        "OR TEAM.Team_Member_2_ID = STUDENT.Student_ID " +
-                        "OR TEAM.Team_Member_3_ID = STUDENT.Student_ID)",
+                        "AND (TEAM.Team_Member_1_ID = STUDENT.Student_ID AND TEAM.Team_Member_1_Status!='Rejected'" +
+                        "OR TEAM.Team_Member_2_ID = STUDENT.Student_ID AND TEAM.Team_Member_2_Status!='Rejected'" +
+                        "OR TEAM.Team_Member_3_ID = STUDENT.Student_ID AND TEAM.Team_Member_3_Status!='Rejected')",
                 studentId);
 
         Connection connection = DBConnection.getConnection();
@@ -165,7 +258,7 @@ public class TeamDatabaseOperationImplementation implements TeamDatabaseOperatio
     }
 
     @Override
-    public int getLastPrimaryKey() throws SQLException {
+    public int getMaxPrimaryKey() throws SQLException {
         String getMaxPrimaryKey = String.format("SELECT MAX(Team_ID) FROM TEAM");
         Connection connection = DBConnection.getConnection();
         Statement statement = connection.createStatement();

@@ -3,7 +3,7 @@ package dboperations;
 import dbconnection.DBConnection;
 import users.LoginInfo;
 import users.User;
-import users.UserDatabaseOperation;
+import users.dbinterfaces.UserDatabaseOperation;
 
 import java.sql.*;
 
@@ -26,21 +26,25 @@ public class UserDatabaseOperationImplementation implements UserDatabaseOperatio
         * inserts into corresponding table
         * Currently, the tables are: Student, Teacher, Chairman
         * */
-        String queryForUserTable;
-        if (user.getType() == "Teacher" || user.getType() == "Chairman"){
-           queryForUserTable = String.format("INSERT INTO %s VALUES('%s', '%s', '%s')",
-                                            user.getType(),
-                                            user.getUsername(),
-                                            user.getName(),
-                                            user.getEmail());
-        }
-        else {
-            queryForUserTable = String.format("INSERT INTO %s VALUES('%s', '%s', '%s', '', '', '')",
-                    user.getType(),
-                    user.getUsername(),
-                    user.getName(),
-                    user.getEmail());
-        }
+        String queryForUserTable = String.format("INSERT INTO %s VALUES('%s', '%s', '%s', '', '', '')",
+                user.getType(),
+                user.getUsername(),
+                user.getName(),
+                user.getEmail());
+//        if (user.getType() == "Teacher" || user.getType() == "Chairman"){
+//           queryForUserTable = String.format("INSERT INTO %s VALUES('%s', '%s', '%s')",
+//                                            user.getType(),
+//                                            user.getUsername(),
+//                                            user.getName(),
+//                                            user.getEmail());
+//        }
+//        else {
+//            queryForUserTable = String.format("INSERT INTO %s VALUES('%s', '%s', '%s', '', '', '')",
+//                    user.getType(),
+//                    user.getUsername(),
+//                    user.getName(),
+//                    user.getEmail());
+//        }
 
         // executing 2 queries
         System.out.println(queryForLoginTable);
@@ -89,5 +93,29 @@ public class UserDatabaseOperationImplementation implements UserDatabaseOperatio
             e.printStackTrace();
         }
         return false; // login info does not exist in LOGINS table
+    }
+
+    @Override
+    public String getUserType(LoginInfo logins) throws SQLException {
+        String query = String.format("SELECT USERTYPE FROM LOGINS WHERE USERNAME='%s'",
+                logins.getUsername());
+        Connection connection = DBConnection.getConnection();
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(query);
+        if (resultSet.next()){
+            return resultSet.getString("USERTYPE");
+        }
+        return null;
+    }
+
+    @Override
+    public boolean exists(User user) throws SQLException {
+        String query = String.format("SELECT USERNAME FROM LOGINS WHERE USERNAME='%s' AND USERTYPE='%s'",
+                user.getUsername(),
+                user.getType());
+        Connection connection = DBConnection.getConnection();
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(query);
+        return (resultSet.next());
     }
 }
