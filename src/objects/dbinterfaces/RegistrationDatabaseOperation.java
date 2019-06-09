@@ -13,4 +13,5 @@ public interface RegistrationDatabaseOperation {
     int getLastPrimaryKey() throws SQLException;
     boolean removeRegistration(Course course, Student student);
     ObservableList <Course> getAllRegisteredCourses(Student student) throws SQLException;
+    ObservableList <Student> getAllRegisteredStudents(Course course) throws SQLException;
 }

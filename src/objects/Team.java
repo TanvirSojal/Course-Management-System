@@ -119,8 +119,7 @@ public class Team {
         this.team3rdMemberStatus = team3rdMemberStatus;
     }
 
-    @Override
-    public String toString() {
+    public int getMemberCount() {
         int memberCount = 0;
         if (team1stMemberId != null)
             memberCount++;
@@ -128,6 +127,12 @@ public class Team {
             memberCount++;
         if (team3rdMemberId != null)
             memberCount++;
-        return String.format("(%d) : %s : %d Member(s) : %s", this.teamId, this.teamName, memberCount, this.teamSupervisorId);
+        return memberCount;
+    }
+
+    @Override
+    public String toString() {
+
+        return String.format("(%d) : %s : %d Member(s) : %s", this.teamId, this.teamName, this.getMemberCount(), this.teamSupervisorId);
     }
 }

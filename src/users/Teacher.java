@@ -1,5 +1,7 @@
 package users;
 
+import java.util.Objects;
+
 public class Teacher {
     private String teacherInitial;
     private String teacherName;
@@ -70,5 +72,23 @@ public class Teacher {
         return String.format("%s (%s)",
                             this.teacherName,
                             this.teacherInitial);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Teacher teacher = (Teacher) o;
+        return Objects.equals(teacherInitial, teacher.teacherInitial) &&
+                Objects.equals(teacherName, teacher.teacherName) &&
+                Objects.equals(teacherEmail, teacher.teacherEmail) &&
+                Objects.equals(teacherBloodGroup, teacher.teacherBloodGroup) &&
+                Objects.equals(teacherContactNumber, teacher.teacherContactNumber) &&
+                Objects.equals(teacherAddress, teacher.teacherAddress);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(teacherInitial, teacherName, teacherEmail, teacherBloodGroup, teacherContactNumber, teacherAddress);
     }
 }

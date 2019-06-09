@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -19,24 +20,19 @@
     <children>
         <Rectangle fill="DODGERBLUE" height="87.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" style="-fx-fill: #595660;" width="1200.0" />
         <Circle fill="#ffdb6f" layoutX="40.0" layoutY="43.0" radius="6.0" stroke="BLACK" strokeWidth="0.0" />
-        <HBox layoutX="498.0" layoutY="37.0" prefHeight="58.0" prefWidth="659.0" spacing="10.0">
+        <HBox layoutX="543.0" layoutY="33.0" prefHeight="58.0" prefWidth="554.0" spacing="10.0">
             <children>
                 <Button mnemonicParsing="false" onAction="#navigateToChairmanInformation" prefHeight="30.0" prefWidth="160.0" stylesheets="@../styles/navigation_button.css" text="Chairman Information" textFill="WHITE">
                     <font>
                         <Font size="14.0" />
                     </font>
                 </Button>
-                <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="144.0" stylesheets="@../styles/navigation_button.css" text="Research Proposals" textFill="WHITE">
+                <Button mnemonicParsing="false" onAction="#navigateToChairmanAdministrationPane" prefHeight="30.0" prefWidth="144.0" stylesheets="@../styles/navigation_button.css" text="Administration" textFill="WHITE">
                     <font>
                         <Font size="14.0" />
                     </font>
                 </Button>
-                <Button mnemonicParsing="false" prefWidth="100.0" stylesheets="@../styles/navigation_button.css" text="Team" textFill="WHITE">
-                    <font>
-                        <Font size="14.0" />
-                    </font>
-                </Button>
-                <Button mnemonicParsing="false" prefWidth="140.0" stylesheets="@../styles/navigation_button.css" text="Apply for Research" textFill="WHITE">
+                <Button mnemonicParsing="false" onAction="#navigateToChairmanResearchProposalPane" prefWidth="140.0" stylesheets="@../styles/navigation_button.css" text="Research Proposals" textFill="WHITE">
                     <font>
                         <Font size="14.0" />
                     </font>
@@ -112,7 +108,7 @@
                 </Label>
             </children>
         </AnchorPane>
-        <AnchorPane fx:id="chairmanInformationPane" layoutY="135.0" prefHeight="715.0" prefWidth="1200.0">
+        <AnchorPane fx:id="chairmanInformationPane" layoutY="135.0" prefHeight="715.0" prefWidth="1200.0" visible="false">
             <children>
                 <GridPane layoutX="343.0" layoutY="98.0" prefHeight="282.0" prefWidth="490.0">
                     <columnConstraints>
@@ -233,7 +229,7 @@
                         </Label>
                     </children>
                 </GridPane>
-                <Label layoutX="343.0" layoutY="49.0" text="Teacher Information">
+                <Label layoutX="343.0" layoutY="49.0" text="Chairman Information">
                     <font>
                         <Font size="16.0" />
                     </font>
@@ -254,46 +250,218 @@
                 </VBox>
             </children>
         </AnchorPane>
-        <AnchorPane fx:id="studentRegistrationPane" layoutY="135.0" prefHeight="715.0" prefWidth="1200.0" visible="false">
+        <AnchorPane fx:id="chairmanAdministrationPane" layoutY="135.0" prefHeight="715.0" prefWidth="1200.0">
             <children>
-                <Label layoutX="65.0" layoutY="63.0" text="Offered Courses">
+                <Label layoutX="65.0" layoutY="63.0" text="Set Deadlines For Tasks">
                     <font>
                         <Font size="16.0" />
                     </font>
                 </Label>
-                <TableView layoutX="65.0" layoutY="120.0" prefHeight="200.0" prefWidth="490.0" />
-                <Label layoutX="638.0" layoutY="63.0" text="Registered Courses">
-                    <font>
-                        <Font size="16.0" />
-                    </font>
-                </Label>
-                <Label fx:id="registrationStatusLabel" layoutX="65.0" layoutY="340.0" text="Registration Status For Selected Course" />
-                <VBox layoutX="293.0" layoutY="445.0" prefHeight="169.0" prefWidth="690.0" spacing="4.0">
+                <Label fx:id="deadlineStatusLabel" layoutX="65.0" layoutY="243.0" text="deadlineStatusLabel" />
+                <VBox layoutX="65.0" layoutY="456.0" prefHeight="155.0" prefWidth="535.0" spacing="4.0">
                     <children>
                         <Label text="Notes:">
                             <font>
                                 <Font name="System Bold" size="14.0" />
                             </font>
                         </Label>
-                        <Label alignment="TOP_LEFT" prefHeight="25.0" prefWidth="696.0" text="1. Select a row from &quot;Offered Courses&quot; table and hit &quot;Register&quot; button to register for that course (one at a time).">
+                        <Label alignment="TOP_LEFT" prefHeight="25.0" prefWidth="696.0" text="1. Set deadlines for specific task here.">
                             <font>
                                 <Font size="14.0" />
                             </font>
                         </Label>
-                        <Label alignment="TOP_LEFT" prefHeight="25.0" prefWidth="512.0" text="2. Courses you successfully registered will show on the &quot;Registered Courses&quot; table.">
+                        <Label alignment="TOP_LEFT" prefHeight="53.0" prefWidth="512.0" text="2. Students and Teachers who missed their respective deadlines will be displayed in corresponding tables." wrapText="true">
                             <font>
                                 <Font size="14.0" />
                             </font>
                         </Label>
-                        <Label alignment="TOP_LEFT" prefHeight="25.0" prefWidth="512.0" text="3. Courses you successfully registered will show on the &quot;Registered Courses&quot; table.">
+                  <Label alignment="TOP_LEFT" prefHeight="53.0" prefWidth="512.0" text="3. If you want to update only one field, just leave the other like that and make changes on that field." wrapText="true">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                    </children>
+                </VBox>
+            <GridPane layoutX="65.0" layoutY="117.0" prefHeight="94.0" prefWidth="554.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="335.0" minWidth="10.0" prefWidth="262.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="299.0" minWidth="10.0" prefWidth="170.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="299.0" minWidth="10.0" prefWidth="126.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label prefHeight="20.0" prefWidth="227.0" text="Research Application Submission:">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label prefHeight="20.0" prefWidth="224.0" text="Research Application Evaluation:" GridPane.rowIndex="1">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <DatePicker fx:id="applicationDeadlineDatePicker" prefHeight="26.0" prefWidth="140.0" GridPane.columnIndex="1" />
+                  <DatePicker fx:id="evaluationDeadlineDatePicker" prefHeight="26.0" prefWidth="140.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Button mnemonicParsing="false" onAction="#handleApplicationDeadlineUpdate" prefHeight="26.0" prefWidth="66.0" stylesheets="@../styles/navigation_button.css" text="Set" textFill="WHITE" GridPane.columnIndex="2" />
+                  <Button mnemonicParsing="false" onAction="#handleEvaluationDeadlineUpdate" prefHeight="26.0" prefWidth="66.0" stylesheets="@../styles/navigation_button.css" text="Set" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+               </children>
+            </GridPane>
+            <TableView fx:id="defaulterStudentTableView" layoutX="682.0" layoutY="114.0" prefHeight="200.0" prefWidth="439.0" />
+            <Label layoutX="682.0" layoutY="68.0" text="Students who missed deadline (Application Submission)">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <TableView fx:id="defaulterTeacherTableView" layoutX="682.0" layoutY="413.0" prefHeight="200.0" prefWidth="439.0" />
+            <Label layoutX="682.0" layoutY="367.0" text="Teacher who missed deadline  (Application Evaluation)">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label alignment="TOP_LEFT" layoutX="65.0" layoutY="304.0" prefHeight="46.0" prefWidth="214.0" text="Current Application Submission Deadline (YY/MM/DD):" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="currentApplicationDeadlineLabel" layoutX="65.0" layoutY="348.0" prefHeight="20.0" prefWidth="181.0" text="00-99-99" textFill="RED">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label alignment="TOP_LEFT" layoutX="351.0" layoutY="304.0" prefHeight="41.0" prefWidth="214.0" text="Current Application Evaluation Deadline  (YY/MM/DD):" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="currentEvaluationDeadlineLabel" layoutX="351.0" layoutY="352.0" prefHeight="20.0" prefWidth="181.0" text="00-99-99" textFill="RED">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            </children>
+        </AnchorPane>
+        <AnchorPane fx:id="chairmanResearchProposalPane" layoutY="135.0" prefHeight="715.0" prefWidth="1200.0" visible="false">
+            <children>
+                <Label layoutX="65.0" layoutY="63.0" text="Proposal List">
+                    <font>
+                        <Font size="16.0" />
+                    </font>
+                </Label>
+                <TableView fx:id="researchProposalTableView" layoutX="65.0" layoutY="108.0" prefHeight="347.0" prefWidth="490.0" />
+                <Label layoutX="638.0" layoutY="63.0" text="Proposal Details">
+                    <font>
+                        <Font size="16.0" />
+                    </font>
+                </Label>
+                <Label fx:id="researchProposalStatusLabel" layoutX="65.0" layoutY="522.0" text="proposalStatusLabel" />
+                <VBox layoutX="65.0" layoutY="568.0" prefHeight="106.0" prefWidth="490.0" spacing="4.0">
+                    <children>
+                        <Label text="Notes:">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </Label>
+                        <Label alignment="TOP_LEFT" prefHeight="46.0" prefWidth="490.0" text="1. You can accept/reject proposals endorsed by supervisors. Rejected proposals are not displayed." wrapText="true">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </Label>
+                        <Label alignment="TOP_LEFT" prefHeight="42.0" prefWidth="498.0" text="2. You must &quot;Endorse&quot; or &quot;Reject&quot; every research proposal before deadline." wrapText="true">
                             <font>
                                 <Font size="14.0" />
                             </font>
                         </Label>
                     </children>
                 </VBox>
-                <TableView layoutX="638.0" layoutY="120.0" prefHeight="200.0" prefWidth="490.0" />
-                <Label fx:id="removeCourseStatusLabel" layoutX="638.0" layoutY="340.0" text="Status for removed course" />
+                <TableView fx:id="researchTeamMemberTableView" layoutX="638.0" layoutY="138.0" prefHeight="106.0" prefWidth="490.0" />
+                <HBox layoutX="638.0" layoutY="108.0" prefHeight="27.0" prefWidth="116.0" spacing="4.0">
+                    <children>
+                        <Label prefHeight="20.0" prefWidth="77.0" text="Team ID: ">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </Label>
+                        <Label fx:id="researchTeamIdLabel" prefHeight="20.0" prefWidth="50.0" text="132" textFill="BLUE">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </HBox>
+                <HBox layoutX="763.0" layoutY="108.0" prefHeight="27.0" prefWidth="221.0" spacing="4.0">
+                    <children>
+                        <Label text="Name: ">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </Label>
+                        <Label fx:id="researchTeamNameLabel" prefHeight="20.0" prefWidth="170.0" text="ThisIsALongNameJustTo" textFill="BLUE">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </HBox>
+                <Label layoutX="638.0" layoutY="302.0" text="Research Topic">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                </Label>
+                <Label fx:id="researchTopicLabel" alignment="TOP_LEFT" layoutX="638.0" layoutY="329.0" prefHeight="46.0" prefWidth="490.0" text="asdsasdsaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" wrapText="true">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
+                <Label layoutX="638.0" layoutY="385.0" text="Aim/Hypothesis">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                </Label>
+                <Label fx:id="researchHypothesisLabel" alignment="TOP_LEFT" layoutX="638.0" layoutY="412.0" prefHeight="189.0" prefWidth="490.0" text="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" wrapText="true">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
+                <Label layoutX="638.0" layoutY="612.0" text="Comment">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                </Label>
+                <Label fx:id="researchCommentLabel" alignment="TOP_LEFT" layoutX="638.0" layoutY="639.0" prefHeight="46.0" prefWidth="490.0" text="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" wrapText="true">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
+                <Label layoutX="638.0" layoutY="264.0" text="Semester Proposed">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                </Label>
+                <Label fx:id="researchTeamRequiredSemesterLabel" layoutX="784.0" layoutY="264.0" text="2" textFill="BLUE">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                </Label>
+                <Button layoutX="65.0" layoutY="474.0" mnemonicParsing="false" onAction="#displayResearchApplicationInformation" prefHeight="30.0" prefWidth="150.0" stylesheets="@../styles/navigation_button.css" text="Show Details" textFill="WHITE" />
+                <Button layoutX="235.0" layoutY="474.0" mnemonicParsing="false" onAction="#handleAcceptResearchApplication" prefHeight="30.0" prefWidth="150.0" stylesheets="@../styles/navigation_button.css" text="Accept" textFill="WHITE" />
+                <Button layoutX="405.0" layoutY="474.0" mnemonicParsing="false" onAction="#handleRejectResearchApplication" prefHeight="30.0" prefWidth="150.0" stylesheets="@../styles/navigation_button.css" text="Reject" textFill="WHITE" />
+            <HBox layoutX="991.0" layoutY="108.0" prefHeight="27.0" prefWidth="136.0" spacing="4.0">
+               <children>
+                  <Label prefHeight="20.0" prefWidth="138.0" text="Supervisor:">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="researchTeamSupervisorLabel" prefHeight="20.0" prefWidth="113.0" text="ABCDE" textFill="BLUE">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
             </children>
         </AnchorPane>
     </children>

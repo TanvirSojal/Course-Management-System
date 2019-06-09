@@ -1,0 +1,13 @@
+.button {
+    -fx-background-color:  #6f6b7a;
+    -fx-font-size: 14;
+}
+
+.button:hover{
+    -fx-cursor: hand;
+    -fx-background-color:  #615f68;
+}
+
+.button:active{
+    -fx-background-color: #dfdce5;
+}

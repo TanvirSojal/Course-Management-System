@@ -4,17 +4,18 @@ public class Member {
     private int serial;
     private String studentId;
     private String name;
+    private String hasRegisteredForResearch;
     private String confirmationStatus;
 
-    public Member(int serial, String studentId, String name, String confirmationStatus) {
+    public Member(int serial, String studentId, String name, String hasRegisteredForResearch, String confirmationStatus) {
         this.serial = serial;
         this.studentId = studentId;
         this.name = name;
+        this.hasRegisteredForResearch = hasRegisteredForResearch;
         this.confirmationStatus = confirmationStatus;
     }
 
     public int getSerial() {
-
         return serial;
     }
 
@@ -38,6 +39,14 @@ public class Member {
         this.name = name;
     }
 
+    public String getHasRegisteredForResearch() {
+        return hasRegisteredForResearch;
+    }
+
+    public void setHasRegisteredForResearch(String hasRegisteredForResearch) {
+        this.hasRegisteredForResearch = hasRegisteredForResearch;
+    }
+
     public String getConfirmationStatus() {
         return confirmationStatus;
     }
@@ -52,6 +61,7 @@ public class Member {
                 "serial=" + serial +
                 ", studentId='" + studentId + '\'' +
                 ", name='" + name + '\'' +
+                ", hasRegisteredForResearch='" + hasRegisteredForResearch + '\'' +
                 ", confirmationStatus='" + confirmationStatus + '\'' +
                 '}';
     }

@@ -97,4 +97,30 @@ public class RegistrationDatabaseOperationImplementation implements Registration
         }
         return courseList;
     }
+
+    @Override
+    public ObservableList <Student> getAllRegisteredStudents(Course course) throws SQLException {
+        String query = String.format("SELECT STUDENT.Student_ID, STUDENT.Student_Name, STUDENT.Student_Email, STUDENT.Student_Blood_Group, STUDENT.Student_Contact_Number, STUDENT.Student_Address " +
+                                    "FROM REGISTRATION, STUDENT " +
+                                    "WHERE REGISTRATION.Course_ID=%d AND STUDENT.Student_ID=REGISTRATION.Student_ID",
+                                    course.getCourseId());
+
+        Connection connection = DBConnection.getConnection();
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(query);
+
+        ObservableList <Student> studentList = FXCollections.observableArrayList();
+
+        while(resultSet.next()){
+            String studentId = resultSet.getString("Student_ID");
+            String studentName = resultSet.getString("Student_Name");
+            String studentEmail = resultSet.getString("Student_Email");
+            String studentBloodGroup = resultSet.getString("Student_Blood_Group");
+            String studentContactNumber = resultSet.getString("Student_Contact_Number");
+            String studentAddress = resultSet.getString("Student_Address");
+
+            studentList.add(new Student(studentId, studentName, studentEmail, studentBloodGroup, studentContactNumber, studentAddress));
+        }
+        return studentList;
+    }
 }

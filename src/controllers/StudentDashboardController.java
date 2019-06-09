@@ -16,14 +16,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import objects.*;
-import objects.dbinterfaces.CourseDatabaseOperation;
-import objects.dbinterfaces.RegistrationDatabaseOperation;
-import objects.dbinterfaces.ResearchApplicationDatabaseOperation;
-import objects.dbinterfaces.TeamDatabaseOperation;
+import objects.dbinterfaces.*;
 import users.*;
 import users.dbinterfaces.StudentDatabaseOperation;
 import users.dbinterfaces.TeacherDatabaseOperation;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -70,6 +68,11 @@ public class StudentDashboardController implements Initializable {
     * */
     private String studentId;
     private int registrationId;
+    private LocalDate applicationDeadline;
+
+    @FXML
+    private Label applicationDeadlineLabel;
+
 
     @FXML
     private AnchorPane studentRegistrationPane;
@@ -200,6 +203,7 @@ public class StudentDashboardController implements Initializable {
     private Label researchSupervisorStatusLabel;
 
 
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -212,6 +216,7 @@ public class StudentDashboardController implements Initializable {
             // fetching necessary information from database
             fetchStudentInformationFromDatabase();
             fetchCourseInformationFromDatabase();
+            fetchDeadlineInformationFromDatabase();
             fetchRegistrationInformationFromDatabase();
             fetchTeacherInformationFromDatabase();
             fetchTeamInformation();
@@ -382,6 +387,18 @@ public class StudentDashboardController implements Initializable {
     /*******************************************
      *  Registration Page related methods
      * ******************************************/
+
+    private void fetchDeadlineInformationFromDatabase() throws SQLException {
+        DeadlineDatabaseOperation deadlineOp = new DeadlineDatabaseOperationImplementation();
+        applicationDeadline = deadlineOp.getApplicationSubmissionDeadline();
+
+        // setting last changed deadlines on the labels
+        if (applicationDeadline != null)
+            applicationDeadlineLabel.setText(applicationDeadline.toString());
+        else
+            applicationDeadlineLabel.setText(null);
+    }
+
     private void fetchCourseInformationFromDatabase() throws SQLException{
         courseList = FXCollections.observableArrayList();
         CourseDatabaseOperation courseOp = new CourseDatabaseOperationImplementation();
@@ -476,6 +493,12 @@ public class StudentDashboardController implements Initializable {
             removeCourseStatusLabel.setText("Select a course first!");
             return;
         }
+
+        if (pickedCourse.getCourseId() == 1 && numberOfTeams > 0){
+            removeCourseStatusLabel.setText("You can not remove CSE4000 after joining a Research Team.");
+            return;
+        }
+
         RegistrationDatabaseOperation regOp = new RegistrationDatabaseOperationImplementation();
         boolean removeStatus = regOp.removeRegistration(pickedCourse, student);
         if (removeStatus){
@@ -543,6 +566,11 @@ public class StudentDashboardController implements Initializable {
         if (teamList.size() > 0){
             //System.out.println("TeamList Size: " + teamList.size());
 
+            CourseDatabaseOperation courseOp = new CourseDatabaseOperationImplementation();
+            RegistrationDatabaseOperation regOp = new RegistrationDatabaseOperationImplementation();
+
+            Course ResearchMethodology = courseOp.getCourse(1);
+
             for (Team team : teamList){
 
                 StudentDatabaseOperation studentOp = new StudentDatabaseOperationImplementation();
@@ -557,6 +585,40 @@ public class StudentDashboardController implements Initializable {
                     researchTeamList.add(team);
                     researchTeamComboBox.setItems(researchTeamList);
                     researchTeamComboBox.getSelectionModel().selectFirst();
+
+                    // check if they are registered for CSE4000
+                    boolean hasRegisteredMember1;
+                    boolean hasRegisteredMember2;
+                    boolean hasRegisteredMember3;
+
+                    String registeredForResearchMember1 = null;
+                    String registeredForResearchMember2 = null;
+                    String registeredForResearchMember3 = null;
+
+                    if (student1 != null){
+                        hasRegisteredMember1 = regOp.exists(ResearchMethodology, student1);
+                        if (hasRegisteredMember1)
+                            registeredForResearchMember1 = "Yes";
+                        else
+                            registeredForResearchMember1 = "No";
+                    }
+
+                    if (student2 != null){
+                        hasRegisteredMember2 = regOp.exists(ResearchMethodology, student2);
+                        if (hasRegisteredMember2)
+                            registeredForResearchMember2 = "Yes";
+                        else
+                            registeredForResearchMember2 = "No";
+                    }
+
+                    if (student3 != null){
+                        hasRegisteredMember3 = regOp.exists(ResearchMethodology, student3);
+                        if (hasRegisteredMember3)
+                            registeredForResearchMember3 = "Yes";
+                        else
+                            registeredForResearchMember3 = "No";
+                    }
+
 
                     // for 1st team slot
                     if (team1IdLabel.getText() == null){
@@ -574,23 +636,25 @@ public class StudentDashboardController implements Initializable {
                         team1 = new Team(team);
 
                         if (student1 != null){
-                            Member member1 = new Member(1, student1.getStudentId(), student1.getStudentName(), team.getTeam1stMemberStatus());
-                            //System.out.println(member1);
+
+                            Member member1 = new Member(1, student1.getStudentId(), student1.getStudentName(), registeredForResearchMember1, team.getTeam1stMemberStatus());
+                            System.out.println(member1);
                             memberListTeam1.add(member1);
                         }
 
                         if (student2 != null){
-                            Member member2 = new Member(2, student2.getStudentId(), student2.getStudentName(), team.getTeam2ndMemberStatus());
+                            Member member2 = new Member(2, student2.getStudentId(), student2.getStudentName(), registeredForResearchMember2, team.getTeam2ndMemberStatus());
                             //System.out.println(member2);
                             memberListTeam1.add(member2);
                         }
 
                         if (student3 != null){
-                            Member member3 = new Member(3, student3.getStudentId(), student3.getStudentName(), team.getTeam3rdMemberStatus());
+
+                            Member member3 = new Member(3, student3.getStudentId(), student3.getStudentName(), registeredForResearchMember3, team.getTeam3rdMemberStatus());
                             //System.out.println(member3);
                             memberListTeam1.add(member3);
                         }
-                        //System.out.println(memberListTeam1.size());
+
                         team1TableView.setItems(memberListTeam1);
                     }
                     // for 2nd team slot
@@ -609,19 +673,19 @@ public class StudentDashboardController implements Initializable {
                         team2 = new Team(team);
 
                         if (student1 != null){
-                            Member member1 = new Member(1, student1.getStudentId(), student1.getStudentName(), team.getTeam1stMemberStatus());
+                            Member member1 = new Member(1, student1.getStudentId(), student1.getStudentName(), registeredForResearchMember1, team.getTeam1stMemberStatus());
                             //System.out.println(member1);
                             memberListTeam2.add(member1);
                         }
 
                         if (student2 != null){
-                            Member member2 = new Member(2, student2.getStudentId(), student2.getStudentName(), team.getTeam2ndMemberStatus());
+                            Member member2 = new Member(2, student2.getStudentId(), student2.getStudentName(), registeredForResearchMember2, team.getTeam2ndMemberStatus());
                             //System.out.println(member2);
                             memberListTeam2.add(member2);
                         }
 
                         if (student3 != null){
-                            Member member3 = new Member(3, student3.getStudentId(), student3.getStudentName(), team.getTeam3rdMemberStatus());
+                            Member member3 = new Member(3, student3.getStudentId(), student3.getStudentName(), registeredForResearchMember3, team.getTeam3rdMemberStatus());
                             //System.out.println(member3);
                             memberListTeam2.add(member3);
                         }
@@ -647,19 +711,19 @@ public class StudentDashboardController implements Initializable {
 
 
                         if (student1 != null){
-                            Member member1 = new Member(1, student1.getStudentId(), student1.getStudentName(), team.getTeam1stMemberStatus());
+                            Member member1 = new Member(1, student1.getStudentId(), student1.getStudentName(), registeredForResearchMember1, team.getTeam1stMemberStatus());
                             //System.out.println(member1);
                             memberListTeam3.add(member1);
                         }
 
                         if (student2 != null){
-                            Member member2 = new Member(2, student2.getStudentId(), student2.getStudentName(), team.getTeam2ndMemberStatus());
+                            Member member2 = new Member(2, student2.getStudentId(), student2.getStudentName(), registeredForResearchMember2, team.getTeam2ndMemberStatus());
                             //System.out.println(member2);
                             memberListTeam3.add(member2);
                         }
 
                         if (student3 != null){
-                            Member member3 = new Member(3, student3.getStudentId(), student3.getStudentName(), team.getTeam3rdMemberStatus());
+                            Member member3 = new Member(3, student3.getStudentId(), student3.getStudentName(), registeredForResearchMember3, team.getTeam3rdMemberStatus());
                             //System.out.println(member3);
                             memberListTeam3.add(member3);
                         }
@@ -886,6 +950,8 @@ public class StudentDashboardController implements Initializable {
             return;
         }
 
+        ResearchApplicationDatabaseOperation researchOp = new ResearchApplicationDatabaseOperationImplementation();
+
         // Deleting team 1
         if (currentTab == 0){
             TeamDatabaseOperation teamOp = new TeamDatabaseOperationImplementation();
@@ -898,6 +964,12 @@ public class StudentDashboardController implements Initializable {
                 teamRemovalStatusLabel.setText("Can not delete. One or more members have confirmed.");
                 return;
             }
+
+            if (researchOp.teamExists(team1.getTeamId())){
+                teamRemovalStatusLabel.setText("Can not remove team that was selected for application.");
+                return;
+            }
+
             if (teamOp.deleteTeam(team1.getTeamId())){ // student
                 teamRemovalStatusLabel.setText("Team deleted successfully.");
 
@@ -974,6 +1046,11 @@ public class StudentDashboardController implements Initializable {
         // clearing other status fields
         createTeamStatusLabel.setText(null);
         teamRemovalStatusLabel.setText(null);
+
+        if (numberOfTeams >= 3){
+            proposalStatusLabel.setText("Team limit 3 is reached. Delete existing team(s) to add more team(s).");
+            return;
+        }
 
         TeamProposal teamProposal = teamProposalTableView.getSelectionModel().getSelectedItem();
         if (teamProposal == null){
@@ -1087,7 +1164,7 @@ public class StudentDashboardController implements Initializable {
          researchTeamSupervisorLabel.setText(teamOp.getTeam(researchApplication.getApplicationTeamId()).getTeamSupervisorId());
          researchApplicationStatusLabel.setText(researchApplication.getApplicationStatus());
 
-         if (researchApplication.getApplicationStatus().equals("Confirmed")){
+         if (researchApplication.getApplicationStatus().equals("Chairman_Accepted")){
              researchSupervisorStatusLabel.setTextFill(Color.BLUE);
              researchSupervisorStatusLabel.setText("Endorsed");
 
@@ -1095,12 +1172,28 @@ public class StudentDashboardController implements Initializable {
              researchApplicationStatusLabel.setText("Accepted");
          }
 
-         else if (researchApplication.getApplicationStatus().equals("Endorsed")){
+         else if (researchApplication.getApplicationStatus().equals("Chairman_Rejected")){
+            researchSupervisorStatusLabel.setTextFill(Color.BLUE);
+            researchSupervisorStatusLabel.setText("Endorsed");
+
+            researchApplicationStatusLabel.setTextFill(Color.RED);
+            researchApplicationStatusLabel.setText("Rejected");
+        }
+
+         else if (researchApplication.getApplicationStatus().equals("Supervisor_Accepted")){
              researchSupervisorStatusLabel.setTextFill(Color.BLUE);
              researchSupervisorStatusLabel.setText("Endorsed");
 
              researchApplicationStatusLabel.setTextFill(Color.ORANGE);
              researchApplicationStatusLabel.setText("Pending");
+         }
+
+         else if (researchApplication.getApplicationStatus().equals("Supervisor_Rejected")){
+             researchSupervisorStatusLabel.setTextFill(Color.RED);
+             researchSupervisorStatusLabel.setText("Rejected");
+
+             researchApplicationStatusLabel.setTextFill(Color.RED);
+             researchApplicationStatusLabel.setText("Dismissed");
          }
 
          else{
@@ -1114,6 +1207,12 @@ public class StudentDashboardController implements Initializable {
 
     @FXML
     private void handleApplyForResearch(ActionEvent actionEvent) throws SQLException {
+         LocalDate currentDate = LocalDate.now();
+         if (applicationDeadline != null && currentDate.isAfter(applicationDeadline)){
+             researchApplicationFormStatusLabel.setText("Application period is over. Please try again in next semester.");
+             return;
+         }
+
          // can not make more than 3 applications
         if (researchApplicationList.size() >= 3){
             researchApplicationFormStatusLabel.setText("3 applications are sent on your behalf. You can not send more.");

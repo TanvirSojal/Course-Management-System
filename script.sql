@@ -9,6 +9,17 @@ CREATE TABLE LOGINS(
     USERTYPE VARCHAR(10) NOT NULL
 );
 
+-- Demo login data       ("id", "pass", "type")
+INSERT INTO LOGINS VALUES("SM", "123", "Chairman"); -- chairman
+-- teachers
+INSERT INTO LOGINS VALUES("KMH", "123", "Teacher");
+INSERT INTO LOGINS VALUES("AR", "123", "Teacher");
+INSERT INTO LOGINS VALUES("RAJ", "123", "Teacher");
+INSERT INTO LOGINS VALUES("KIA", "123", "Teacher");
+
+INSERT INTO LOGINS VALUES("123", "123", "Student"); -- student
+
+
 -- Teacher table holds information of a Faculty Member
 CREATE TABLE TEACHER(
 	Teacher_ID VARCHAR(20) PRIMARY KEY,
@@ -20,6 +31,12 @@ CREATE TABLE TEACHER(
     FOREIGN KEY TEACHER(Teacher_ID) REFERENCES LOGINS(USERNAME)
 );
 
+-- Demo Teacher data
+INSERT INTO TEACHER VALUES("KMH", "Monirul Hasan", "kmhasan@gmail.com", '', '', '');
+INSERT INTO TEACHER VALUES("AR", "Ashiqur Rahman", "ashiq.seu@gmail.com", '', '', '');
+INSERT INTO TEACHER VALUES("RAJ", "Roksana Akhter Jolly", "roksana.seu@gmail.com", '', '', '');
+INSERT INTO TEACHER VALUES("KIA", "Kimia Aksir", "kimia.aksir@gmail.com", '', '', '');
+
 CREATE TABLE CHAIRMAN(
 	Chairman_ID VARCHAR(20) PRIMARY KEY,
     Chairman_Name VARCHAR(30) NOT NULL,
@@ -30,20 +47,10 @@ CREATE TABLE CHAIRMAN(
     FOREIGN KEY CHAIRMAN(Chairman_ID) REFERENCES LOGINS(USERNAME)
 );
 
-INSERT INTO LOGINS VALUES("SM", "123", "Teacher");
-INSERT INTO LOGINS VALUES("KMH", "123", "Teacher");
-INSERT INTO LOGINS VALUES("AR", "123", "Teacher");
-INSERT INTO LOGINS VALUES("RAJ", "123", "Teacher");
-INSERT INTO LOGINS VALUES("KIA", "123", "Teacher");
-
-INSERT INTO TEACHER VALUES("SM", "Shahriar Manzoor", "smanzoor@gmail.com", '', '', '');
-INSERT INTO TEACHER VALUES("KMH", "Monirul Hasan", "kmhasan@gmail.com", '', '', '');
-INSERT INTO TEACHER VALUES("AR", "Ashiqur Rahman", "ashiq.seu@gmail.com", '', '', '');
-INSERT INTO TEACHER VALUES("RAJ", "Roksana Akhter Jolly", "roksana.seu@gmail.com", '', '', '');
-INSERT INTO TEACHER VALUES("KIA", "Kimia Aksir", "kimia.aksir@gmail.com", '', '', '');
+-- Demo Chairman data
+INSERT INTO CHAIRMAN VALUES("SM", "Shahriar Manzoor", "smanzoor@gmail.com", '', '', '');
 
 
--- Student Table holds information of a Student
 CREATE TABLE STUDENT(
     Student_ID VARCHAR(20) PRIMARY KEY,
     Student_Name VARCHAR(30) NOT NULL,
@@ -54,7 +61,7 @@ CREATE TABLE STUDENT(
     FOREIGN KEY STUDENT(Student_ID) REFERENCES LOGINS(USERNAME)
 );
 
-INSERT INTO LOGINS VALUES("123", "123", "Student");
+-- Demo Student data
 INSERT INTO STUDENT VALUES("123", "test", "test@email.com", NULL, NULL, NULL);
 
 CREATE TABLE COURSE(
@@ -102,7 +109,12 @@ CREATE TABLE APPLICATION(
     Application_Hypothesis VARCHAR(610),
     Application_Comment VARCHAR(110),
     Application_Team_ID INT(10) NOT NULL,
-    Application_Status VARCHAR(15),
+    Application_Status VARCHAR(24),
     FOREIGN KEY APPLICATION(Application_Team_ID) REFERENCES TEAM(Team_ID)
 );
 
+CREATE TABLE DEADLINE(
+    Deadline_ID INT(10) PRIMARY KEY AUTO_INCREMENT,
+    Deadline_Topic VARCHAR(30),
+    Deadline_Date DATE
+);
