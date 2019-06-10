@@ -16,7 +16,7 @@ This is a software mainly focused to manage CSE4000 (Research Methodology) cours
 
  * FXML (for coding the frontend)
 
- * MySQL (for querying from the database)
+ * SQL (for querying from the database)
 
 ## Java Dependencies used:
  * JDK 1.8.0_181
