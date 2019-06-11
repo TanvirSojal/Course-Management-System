@@ -10,6 +10,8 @@ This is a software mainly focused to manage CSE4000 (Research Methodology) cours
  * XAMPP Control Panel v3.2.2 (for monitoring the database)
 
  * MySQL Server 8.0
+ 
+ * Gluon JavaFX Scene Builder 8.5.0
 
 ## Language used:
  * Java (for coding the backend of the software)
