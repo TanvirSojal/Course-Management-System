@@ -57,6 +57,6 @@ Login Page
 ## Chairman Dashboard
 
 #### Administration
-![c3](https://user-images.githubusercontent.com/14056189/59273171-654d3180-8c79-11e9-92a9-622bb1286550.PNG)
-#### Research Proposals
 ![c2](https://user-images.githubusercontent.com/14056189/59273172-65e5c800-8c79-11e9-9fa6-ac302203daf7.PNG)
+#### Research Proposals
+![c3](https://user-images.githubusercontent.com/14056189/59273171-654d3180-8c79-11e9-92a9-622bb1286550.PNG)
